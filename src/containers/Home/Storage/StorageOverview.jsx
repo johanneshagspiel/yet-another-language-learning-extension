@@ -19,10 +19,19 @@ export default function StorageOverview({ setState }) {
 
     const addNewStorageButton = <button type="button" onClick={addNewStorage}>Add new storage option</button>
 
+    if (!storageList) {
+        return (
+            <>
+                <p>Storage</p>
+                <p>Add a storage option first</p>
+                {addNewStorageButton}
+            </>
+        )
+    }
+
     return (
         <>
             <p>Storage</p>
-            {!storageList && <p>Add a storage option first</p>}
             {!storageList && addNewStorageButton}
         </>
     )

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import PonsDictionary from "./PonsDictionary/PonsDictionary";
+import AnkiStorage from "./AnkiStorage/AnkiStorage";
 
-export default function NewDictionary({ setHomeState }) {
+export default function NewStorage({ setHomeState }) {
 
     function goHome() {
         setHomeState("Home");
@@ -10,8 +10,8 @@ export default function NewDictionary({ setHomeState }) {
 
     return (
         <>
-            <p>Select a dictionary to add</p>
-            <PonsDictionary setHomeState={setHomeState}></PonsDictionary>
+            <p>Select a storage option to add</p>
+            <AnkiStorage setHomeState={setHomeState}></AnkiStorage>
             <hr></hr>
             {backButton}
         </>

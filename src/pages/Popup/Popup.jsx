@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import logo from '../../assets/img/logo.svg';
 import SearchWord from "../../containers/WordSearch/SearchWord";
 import './Popup.css';
 import Home from "../../containers/Home/Home";
 import NewDictionary from "../../containers/Home/NewDictionary/NewDictionary";
+import NewStorage from "../../containers/Home/NewStorage/NewStorage";
 
 export default function Popup() {
     const [homeState, setHomeState] = useState("Home");
@@ -34,7 +34,7 @@ export default function Popup() {
         case "NewStorage":
             return (
                 <>
-                    <h1>NewStorage</h1>
+                    <NewStorage setHomeState={setHomeState}></NewStorage>
                 </>
             )
         case "NewDictionary":
