@@ -3,6 +3,7 @@ import {checkWordExists, invoke} from "../../../utils/Helper/AnkiHelper";
 import {lookUpWordPons} from "../../../utils/Helper/PonsHelper";
 import {getLanguageFromCode} from "../../../utils/Helper/LanguageHelper";
 import Rom from "./Rom/Rom";
+import {Tiptap} from "./MyEditor/MyEditor";
 
 export default function SearchWord() {
     const [searchTextObj, setSearchTextObj] = useState(null);
@@ -50,10 +51,9 @@ export default function SearchWord() {
             setSearchTextObj(newSearchTextObj)
 
         } else {
-
             setSearchTextObj(lastSearchTextObj)
         }
-    }, [])
+    })
 
     if (!searchTextObj) {
         return (
@@ -85,11 +85,14 @@ export default function SearchWord() {
         }
 
         return (
-            <>
+            <div>
+                <hr></hr>
+                <Tiptap></Tiptap>
+                <hr></hr>
                 {card_exists && <p>A flashcard already exists for "{selection_text}".</p>}
                 {!word_exists && <p>No translation was found for "{selection_text}" in {getLanguageFromCode(inLanguage)}.</p>}
                 {word_exists && romElementList}
-            </>
+            </div>
         )
     }
 }

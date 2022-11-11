@@ -6,7 +6,7 @@ import NewDictionary from "../../containers/Home/NewDictionary/NewDictionary";
 import NewStorage from "../../containers/Home/NewStorage/NewStorage";
 
 export default function Popup() {
-    const [homeState, setHomeState] = useState("Home");
+    const [homeState, setHomeState] = useState("WordSearch");
 
     // useEffect(async () => {
     //

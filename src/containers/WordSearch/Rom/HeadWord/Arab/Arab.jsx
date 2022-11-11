@@ -19,7 +19,9 @@ export default function Arab({ arabObj }) {
         <>
             {headerH3}
             <table>
-                {translationElementList}
+                <tbody>
+                    {translationElementList}
+                </tbody>
             </table>
         </>
     )
