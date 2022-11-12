@@ -35,6 +35,25 @@ function getSupportedLanguageDic() {
 }
 
 function getLanguageFromCode(countryCode) {
+    const countryCodeType = typeof countryCode
+    if (countryCodeType === "string") {
+
+        const languageDic = getLanguageCodeDic();
+        return languageDic[countryCode]["name"];
+    }
+}
+
+function getCountryCodeFromLanguage(language) {
+    const languageDic = getLanguageCodeDic();
+    const fullLanguageDic = {}
+
+    for (const [key, value] of Object.entries(languageDic)) {
+        fullLanguageDic[String(value["name"]).split(",")[0].split(";")[0]] = key;
+    }
+    return fullLanguageDic[language];
+}
+
+function getLanguageCodeDic() {
     /**
      * @author Phil Teare
      * using wikipedia data
@@ -769,10 +788,11 @@ function getLanguageFromCode(countryCode) {
             "nativeName":"Saɯ cueŋƅ, Saw cuengh"
         }
     }
-    return isoLangs[countryCode]["name"];
+    return isoLangs;
 }
 
 export {
     getSupportedLanguageDic,
-    getLanguageFromCode
+    getLanguageFromCode,
+    getCountryCodeFromLanguage
 }

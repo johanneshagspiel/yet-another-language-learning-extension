@@ -3,9 +3,9 @@ import {checkWordExists, invoke} from "../../../utils/Helper/AnkiHelper";
 import {lookUpWordPons} from "../../../utils/Helper/PonsHelper";
 import {getLanguageFromCode} from "../../../utils/Helper/LanguageHelper";
 import Rom from "./Rom/Rom";
-import {Tiptap} from "./MyEditor/MyEditor";
+import {Tiptap} from "./Tiptap/Tiptap";
 
-export default function SearchWord() {
+export default function SearchWord({ setHomeState }) {
     const [searchTextObj, setSearchTextObj] = useState(null);
 
     const selectedDeck = "Französisch";
@@ -53,11 +53,22 @@ export default function SearchWord() {
         } else {
             setSearchTextObj(lastSearchTextObj)
         }
-    })
+        //this is the cleanup function called when we move back to the home screen - currently does nothing
+        return () => {}
+    }, [])
+
+    function goHome() {
+        setHomeState("Home");
+    }
+    const backButton = <button onClick={goHome}>Back</button>
 
     if (!searchTextObj) {
         return (
         <>
+            <br></br>
+            {backButton}
+            <br></br>
+            <br></br>
             <h1>No word looked up.</h1>
         </>
         )
@@ -81,12 +92,14 @@ export default function SearchWord() {
                 >
                 </Rom>)
             })
-
         }
 
         return (
             <div>
-                <hr></hr>
+                <br></br>
+                {backButton}
+                <br></br>
+                <br></br>
                 <Tiptap></Tiptap>
                 <hr></hr>
                 {card_exists && <p>A flashcard already exists for "{selection_text}".</p>}

@@ -33,6 +33,10 @@ async function checkWordExists(searchParam) {
     return idsExistingCards.length > 0;
 }
 
+async function getDeckname() {
+    return await invoke('deckNames', 6);
+}
+
 function connectedToAnki() {
 
     let connectedToAnkiRequest = new XMLHttpRequest();
@@ -43,6 +47,7 @@ function connectedToAnki() {
         const result = connectedToAnkiRequest.responseText;
         return true;
     } catch (Exception) {
+        console.log(Exception)
         return false
     }
 }
@@ -50,5 +55,5 @@ function connectedToAnki() {
 export {
     connectedToAnki,
     checkWordExists,
-    invoke
+    getDeckname
 };

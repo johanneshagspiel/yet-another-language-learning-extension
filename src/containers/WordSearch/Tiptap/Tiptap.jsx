@@ -22,6 +22,7 @@ import clearFormatIcon from '../../../assets/styling/tiptap/format-clear.svg';
 import undoIcon from '../../../assets/styling/tiptap/arrow-go-back-line.svg';
 import redoIcon from '../../../assets/styling/tiptap/arrow-go-forward-line.svg';
 import ReactTooltip from "react-tooltip";
+import CreateFlashcardButton from "./CreateFlashcardButton/CreateFlashcardButton";
 
 
 const MenuBar = ({ editor }) => {
@@ -227,7 +228,9 @@ const MenuBar = ({ editor }) => {
     )
 }
 
+
 function Tiptap() {
+
     const front = useEditor({
         extensions: [
             StarterKit,
@@ -242,10 +245,27 @@ function Tiptap() {
     `,
     })
 
+    const back = useEditor({
+        extensions: [
+            StarterKit,
+        ],
+        content: `
+      <h2>
+        This is the,
+      </h2>
+      <p>
+        back page:
+      </p>
+    `,
+    })
+
     return (
         <div>
             <MenuBar editor={front} />
             <EditorContent editor={front} />
+            <MenuBar editor={back} />
+            <EditorContent editor={back} />
+            <CreateFlashcardButton front={front} back={back}></CreateFlashcardButton>
         </div>
     )
 }

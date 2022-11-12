@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import DictionaryLanguageSelection from "./DictionaryLanguageSelection";
 
 export default function DictionaryOverview({ setState }) {
     const [dictionaryList, setDictionaryList] = useState(null);
@@ -23,16 +24,16 @@ export default function DictionaryOverview({ setState }) {
         dictionaryElementList = dictionaryList.map((dictionaryObj, i) => {
             if (i === 0) {
                 return (
-                    <>
-                        <input type="radio" key={i} onChange={() => onSelectDictionary(i)} id={dictionaryObj["type"]} checked={true}></input>
+                    <div key={"dic" + i}>
+                        <input type="radio" key={"dic" + i} onChange={() => onSelectDictionary(i)} id={dictionaryObj["type"]} checked={true}></input>
                         <label htmlFor={dictionaryObj["type"]}>{dictionaryObj["type"]}</label>
-                    </>)
+                    </div>)
             } else {
                 return (
-                <>
-                    <input type="radio" key={i} onChange={() => onSelectDictionary(i)} id={dictionaryObj["type"]}></input>
+                <div key={"dic" + i}>
+                    <input type="radio" key={"dic" + i} onChange={() => onSelectDictionary(i)} id={dictionaryObj["type"]}></input>
                     <label htmlFor={dictionaryObj["type"]}>{dictionaryObj["type"]}</label>
-                </>)
+                </div>)
             }
         })
     }
@@ -42,6 +43,8 @@ export default function DictionaryOverview({ setState }) {
         setState("NewDictionary");
     }
     const addNewDictionaryButton = <button type="button" onClick={addNewDictionary}>Add new dictionary</button>
+
+    const languageSelectionDic = <DictionaryLanguageSelection dictionaryName={"PONS"}></DictionaryLanguageSelection>
 
     if (!dictionaryList) {
         return (
@@ -58,7 +61,7 @@ export default function DictionaryOverview({ setState }) {
                 <p>Dictionary</p>
                 {dictionaryElementList}
                 {!notShowAddDictionaryButton && addNewDictionaryButton}
-                {}
+                {languageSelectionDic}
             </>
         )
     }

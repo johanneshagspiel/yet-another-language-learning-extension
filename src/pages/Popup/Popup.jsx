@@ -22,7 +22,7 @@ export default function Popup() {
         case "WordSearch":
             return (
                 <div>
-                    <SearchWord></SearchWord>
+                    <SearchWord setHomeState={setHomeState}></SearchWord>
                 </div>
             );
         case "Home":
