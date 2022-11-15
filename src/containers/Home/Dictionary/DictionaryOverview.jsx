@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import DictionaryLanguageSelection from "./DictionaryLanguageSelection";
+import {DictionaryLanguageSelection} from "./DictionaryLanguageSelection";
 
 export default function DictionaryOverview({ setState }) {
     const [dictionaryList, setDictionaryList] = useState(null);
-    const [selectedDictionary, setSelectedDictionary] = useState(0);
+    const [selectedDictionary, setSelectedDictionary] = useState("");
 
     useEffect(async () => {
         const dictionaryOptionsObject = await chrome.storage.sync.get("dictionary");
@@ -15,23 +15,31 @@ export default function DictionaryOverview({ setState }) {
         }
     }, []);
 
-    function onSelectDictionary(index) {
-        setSelectedDictionary(index);
+    async function saveDictionaryName(dictionaryName) {
+        const storeObj = {
+            "dictionaryName": dictionaryName
+        };
+        await chrome.storage.local.set(storeObj);
     }
+
+    function onSelectDictionary(dictionaryName) {
+        saveDictionaryName(dictionaryName);
+        setSelectedDictionary(dictionaryName);
+    }
+
     let dictionaryElementList = null;
     if (dictionaryList) {
-
         dictionaryElementList = dictionaryList.map((dictionaryObj, i) => {
             if (i === 0) {
                 return (
                     <div key={"dic" + i}>
-                        <input type="radio" key={"dic" + i} onChange={() => onSelectDictionary(i)} id={dictionaryObj["type"]} checked={true}></input>
+                        <input type="radio" key={"dic" + i} onChange={() => onSelectDictionary(dictionaryObj["type"])} id={dictionaryObj["type"]} checked={true}></input>
                         <label htmlFor={dictionaryObj["type"]}>{dictionaryObj["type"]}</label>
                     </div>)
             } else {
                 return (
                 <div key={"dic" + i}>
-                    <input type="radio" key={"dic" + i} onChange={() => onSelectDictionary(i)} id={dictionaryObj["type"]}></input>
+                    <input type="radio" key={"dic" + i} onChange={() => onSelectDictionary(dictionaryObj["type"])} id={dictionaryObj["type"]}></input>
                     <label htmlFor={dictionaryObj["type"]}>{dictionaryObj["type"]}</label>
                 </div>)
             }

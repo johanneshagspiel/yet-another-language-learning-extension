@@ -265,6 +265,7 @@ function Tiptap() {
             <EditorContent editor={front} />
             <MenuBar editor={back} />
             <EditorContent editor={back} />
+            <hr></hr>
             <CreateFlashcardButton front={front} back={back}></CreateFlashcardButton>
         </div>
     )

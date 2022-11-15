@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import SearchWord from "../../containers/WordSearch/SearchWord";
+import WordSearch from "../../containers/WordSearch/WordSearch";
 import './Popup.css';
 import Home from "../../containers/Home/Home";
 import NewDictionary from "../../containers/Home/NewDictionary/NewDictionary";
@@ -22,7 +22,7 @@ export default function Popup() {
         case "WordSearch":
             return (
                 <div>
-                    <SearchWord setHomeState={setHomeState}></SearchWord>
+                    <WordSearch setHomeState={setHomeState}></WordSearch>
                 </div>
             );
         case "Home":

@@ -4,17 +4,24 @@ import {lookUpWordPons} from "../../../utils/Helper/PonsHelper";
 import {getLanguageFromCode} from "../../../utils/Helper/LanguageHelper";
 import Rom from "./Rom/Rom";
 import {Tiptap} from "./Tiptap/Tiptap";
+import {DictionaryLanguageSelection} from "../Home/Dictionary/DictionaryLanguageSelection";
+import {StorageSelection} from "../Home/Storage/StorageSelection";
+import {ModelSelection} from "../Home/Storage/ModelSelection/ModelSelection";
 
-export default function SearchWord({ setHomeState }) {
+
+export default function WordSearch({ setHomeState }) {
     const [searchTextObj, setSearchTextObj] = useState(null);
 
-    const selectedDeck = "Französisch";
-    const inLanguage = "fr";
+    const selectedDictionary = "PONS";
+    const selectedStorage = "ANKI";
+    const selectedDeck = "Italienisch";
+    const selectedModule = "Basic"
+    const sourceLanguage = "it";
     const targetLanguage = "de";
 
     useEffect(async () => {
 
-        const lastSearchTextDic = await chrome.storage.local.get("last_search_text")
+        const lastSearchTextDic = await chrome.storage.local.get("last_search_text");
 
         const lastSearchTextObj = lastSearchTextDic["last_search_text"];
         const to_look_up = lastSearchTextObj?.to_look_up
@@ -37,7 +44,7 @@ export default function SearchWord({ setHomeState }) {
                 newSearchTextObj["card_exists"] = true;
             }
 
-            const translation = lookUpWordPons(lastSearchText, targetLanguage, inLanguage);
+            const translation = lookUpWordPons(lastSearchText, targetLanguage, sourceLanguage);
             newSearchTextObj["translation"]= translation
 
             if (translation.length === 0) {
@@ -102,8 +109,12 @@ export default function SearchWord({ setHomeState }) {
                 <br></br>
                 <Tiptap></Tiptap>
                 <hr></hr>
+                <StorageSelection></StorageSelection>
+                <ModelSelection></ModelSelection>
+                <DictionaryLanguageSelection dictionaryName={selectedDictionary}></DictionaryLanguageSelection>
+                <hr></hr>
                 {card_exists && <p>A flashcard already exists for "{selection_text}".</p>}
-                {!word_exists && <p>No translation was found for "{selection_text}" in {getLanguageFromCode(inLanguage)}.</p>}
+                {!word_exists && <p>No translation was found for "{selection_text}" in {getLanguageFromCode(sourceLanguage)}.</p>}
                 {word_exists && romElementList}
             </div>
         )

@@ -33,6 +33,31 @@ async function checkWordExists(searchParam) {
     return idsExistingCards.length > 0;
 }
 
+async function getModelTemplateFieldCount(modelName) {
+    let searchParam = {}
+    searchParam["modelName"] = modelName;
+
+    const fieldListArray = await invoke('modelFieldNames', 6, searchParam);
+    return fieldListArray.length;
+}
+
+async function getModels() {
+    const modelList = await invoke('modelNames', 6);
+    const fieldCountList = await Promise.all(modelList.map(async (modelName) => await getModelTemplateFieldCount(modelName)))
+    const combineList = modelList.map((modelName, i) => [modelName, fieldCountList[i]]);
+    return combineList
+}
+
+async function addNote(searchParam) {
+    const result = await invoke("addNote", 6, searchParam);
+
+    if (result) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 async function getDeckname() {
     return await invoke('deckNames', 6);
 }
@@ -47,7 +72,6 @@ function connectedToAnki() {
         const result = connectedToAnkiRequest.responseText;
         return true;
     } catch (Exception) {
-        console.log(Exception)
         return false
     }
 }
@@ -55,5 +79,7 @@ function connectedToAnki() {
 export {
     connectedToAnki,
     checkWordExists,
-    getDeckname
+    getDeckname,
+    addNote,
+    getModels
 };

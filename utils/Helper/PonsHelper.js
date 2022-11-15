@@ -35,8 +35,7 @@ function tryConnection(secret) {
         ponsRequest.send(null);
 
         const responseText = ponsRequest.responseText;
-        const result = responseText.length > 0;
-        return result;
+        return responseText.length > 0;
 
     } catch (Exception) {
         return false;
