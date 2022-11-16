@@ -1,73 +1,67 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {getSupportedLanguageDic, getLanguageFromCode, getCountryCodeFromLanguage} from "../../../../utils/Helper/LanguageHelper";
+import Select from 'react-select'
+import {SelectionContext} from "../../SelectionContext/SelectionContext";
 
-function DictionaryLanguageSelection({ dictionaryName }) {
-    //const [dictionaryName, setDictionaryName] = useState("PONS");
-    const [sourceLanguage, setSourceLanguage] = useState("ar");
-    const [targetLanguage, setTargetLanguage] = useState("ar");
+function DictionaryLanguageSelection() {
+    const [dictionaryName, setDictionaryName] = useState("PONS");
+    const {sourceLanguageCode, saveSourceLanguageCode, targetLanguageCode, saveTargetLanguageCode} = useContext(SelectionContext);
 
     const supportedLanguageDic = getSupportedLanguageDic()[dictionaryName];
+
     const supportedSourceLanguagesArray = Object.keys(supportedLanguageDic);
-    const supportedSourceLanguagesFullArray = supportedSourceLanguagesArray.map(x => getLanguageFromCode(x).split(",")[0].split(";")[0]);
+    const supportedSourceLanguagesFullArray = supportedSourceLanguagesArray.map(x => [x, getLanguageFromCode(x).split(",")[0].split(";")[0]]);
 
-    async function saveSourceLanguage(sourceLanguageCode) {
-        const storeObj = {
-            "sourceLanguageCode": sourceLanguageCode
-        };
-        await chrome.storage.local.set(storeObj);
-    }
     function selectNewSourceLanguage(e) {
-        const selectedSourceCountryCode = getCountryCodeFromLanguage(e.target.value);
-        saveSourceLanguage(selectedSourceCountryCode);
+        const selectedSourceCountryCode = e.value;
+        saveSourceLanguageCode(selectedSourceCountryCode);
 
-        if (targetLanguage !== selectedSourceCountryCode) {
-            setTargetLanguage(selectedSourceCountryCode)
-        }
+        const tempTargetLanguageDic = supportedLanguageDic[selectedSourceCountryCode]
+        const firstTargetLanguageCode = tempTargetLanguageDic[0]
+        saveTargetLanguageCode(firstTargetLanguageCode);
     }
 
-    async function saveTargetLanguage(targetLanguageCode) {
-        const storeObj = {
-            "targetLanguageCode": targetLanguageCode
-        };
-        await chrome.storage.local.set(storeObj);
-    }
     function selectNewTargetLanguage(e) {
-        const selectedTargetCountryCode = getCountryCodeFromLanguage(e.target.value);
-        saveTargetLanguage(selectedTargetCountryCode);
+        const selectedTargetCountryCode = e.value;
+        saveTargetLanguageCode(selectedTargetCountryCode);
     }
-
-    const targetLanguageDic = supportedLanguageDic[targetLanguage]
+    const targetLanguageDic = supportedLanguageDic[sourceLanguageCode]
     const supportedTargetLanguagesArray = Object.values(targetLanguageDic);
-    const supportedTargetLanguagesFullArray = supportedTargetLanguagesArray.map(x => getLanguageFromCode(x).split(",")[0].split(";")[0]);
-    const targetLanguageList = supportedTargetLanguagesFullArray.map(((option, i) => {
-        if (i == 0) {
-            return (
-                <option selected dangerouslySetInnerHTML={{ __html: option }} key={"option" + i} ></option>
-            )
-        } else {
-            return (
-                <option dangerouslySetInnerHTML={{ __html: option }} key={"option" + i} ></option>
-            )
-        }
-    }))
+    const supportedTargetLanguagesFullArray = supportedTargetLanguagesArray.map(x => [x, getLanguageFromCode(x).split(",")[0].split(";")[0]]);
+    const targetLanguageOptionList = supportedTargetLanguagesFullArray.map((languageArray) => {
+        let obj = {}
+        obj["value"] = languageArray[0]
+        obj["label"] = languageArray[1]
+        return obj
+    })
 
-    const sourceLanguageList = supportedSourceLanguagesFullArray.map(((option, i) => {
-        return (
-            <option dangerouslySetInnerHTML={{ __html: option }} key={"option" + i} ></option>
-        )
-    }))
+
+    const sourceLanguageOptionList = supportedSourceLanguagesFullArray.map((languageArray) => {
+        let obj = {}
+        obj["value"] = languageArray[0]
+        obj["label"] = languageArray[1]
+        return obj
+    })
+
+    const sourceDefaultValue = {}
+    sourceDefaultValue["value"] = sourceLanguageCode
+    sourceDefaultValue["label"] = getLanguageFromCode(sourceLanguageCode).split(",")[0].split(";")[0]
+
+    const targetDefaultValue = {}
+    targetDefaultValue["value"] = targetLanguageCode
+    targetDefaultValue["label"] = getLanguageFromCode(targetLanguageCode).split(",")[0].split(";")
 
     return (
         <div>
-            <label>Source Language: </label>
-            <select onChange={selectNewSourceLanguage}>
-                {sourceLanguageList}
-            </select>
+            <div key={sourceLanguageCode}>
+                <label>Source Language: </label>
+                <Select options={sourceLanguageOptionList} defaultValue={sourceDefaultValue} onChange={selectNewSourceLanguage}></Select>
+            </div>
             <br></br>
-            <label>Target Language: </label>
-            <select onChange={selectNewTargetLanguage}>
-                {targetLanguageList}
-            </select>
+            <div key={targetLanguageCode}>
+                <label>Target Language: </label>
+                <Select options={targetLanguageOptionList} defaultValue={targetDefaultValue} onChange={selectNewTargetLanguage}></Select>
+            </div>
         </div>
     )
 }

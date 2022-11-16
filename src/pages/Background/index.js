@@ -10,16 +10,22 @@ chrome.runtime.onInstalled.addListener(function () {
 chrome.contextMenus.onClicked.addListener(async function (info, tab) {
 
     const obj = {
-        "selection_text":  info.selectionText,
-        "to_look_up": true,
+        "selectionText":  info.selectionText,
+        "checkStorage": true,
+        "checkTranslation": true,
         "translation": "",
-        "card_exists": false,
-        "word_exists": true,
+        "cardExists": false,
+        "wordExists": true,
     };
 
     const result = {
-        "last_search_text": obj
+        "lastSearchText": obj
     };
-
     await chrome.storage.local.set(result);
+
+    const stateObj = {
+        "popupState": "WordSearch"
+    };
+    await chrome.storage.local.set(stateObj);
+
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import Arab from "./Arab/Arab";
-import {romanize} from "../../../../../utils/Helper/NumberHelper";
+import {romanize} from "../../../../../../utils/Helper/NumberHelper";
 
 export default function HeadWord({ headWordObj, headWordIndex, maxHeadWordCount }) {
 

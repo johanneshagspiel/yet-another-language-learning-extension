@@ -1,46 +1,90 @@
-import React, {useEffect, useState} from 'react';
+import React, {useLayoutEffect, useState, createContext, useContext} from 'react';
 import WordSearch from "../../containers/WordSearch/WordSearch";
 import './Popup.css';
 import Home from "../../containers/Home/Home";
 import NewDictionary from "../../containers/Home/NewDictionary/NewDictionary";
 import NewStorage from "../../containers/Home/NewStorage/NewStorage";
+import {SelectionContext} from "../../containers/SelectionContext/SelectionContext";
 
 export default function Popup() {
     const [homeState, setHomeState] = useState("WordSearch");
+    const [sourceLanguageCode, setSourceLanguageCode] = useState("de");
+    const [targetLanguageCode, setTargetLanguageCode] = useState("en");
 
-    // useEffect(async () => {
-    //
-    //     const lastSearchTextDic = await chrome.storage.local.get("last_search_text");
-    //     const dictionaryListType = typeof lastSearchTextDic;
-    //
-    //     if (dictionaryListType !== "undefined") {
-    //         setShowSearch(true);
-    //     }
-    // })
+    const value = {sourceLanguageCode, saveSourceLanguageCode, targetLanguageCode, saveTargetLanguageCode}
+
+    async function saveSourceLanguageCode(newSourceLanguageCode) {
+        const storeObj = {
+            "sourceLanguageCode": newSourceLanguageCode
+        };
+        await chrome.storage.local.set(storeObj);
+        setSourceLanguageCode(newSourceLanguageCode);
+    }
+    async function saveTargetLanguageCode(newTargetLanguageCode) {
+        const storeObj = {
+            "targetLanguageCode": newTargetLanguageCode
+        };
+        await chrome.storage.local.set(storeObj);
+        setTargetLanguageCode(newTargetLanguageCode);
+    }
+
+
+    async function changeHomeState(newState) {
+        const storeObj = {
+            "popupState": newState
+        };
+        await chrome.storage.local.set(storeObj);
+        setHomeState(newState)
+    }
+
+    useLayoutEffect(() => {
+        async function fetchStartInformation() {
+            const lastStateResult = await chrome.storage.local.get("popupState");
+            const lastState = lastStateResult["popupState"];
+            if (homeState !== lastState) {
+                setHomeState(lastState);
+            }
+
+            const storedSourceLanguageCodeObj = await chrome.storage.local.get("sourceLanguageCode");
+            const storedSourceLanguageCode = storedSourceLanguageCodeObj["sourceLanguageCode"]
+            setSourceLanguageCode(storedSourceLanguageCode);
+
+            const storedTargetLanguageCodeObj = await chrome.storage.local.get("targetLanguageCode");
+            const storedTargetLanguageCode = storedTargetLanguageCodeObj["targetLanguageCode"]
+            setTargetLanguageCode(storedTargetLanguageCode);
+
+        }
+        fetchStartInformation();
+    }, [homeState, sourceLanguageCode]);
+
 
     switch (homeState) {
         case "WordSearch":
             return (
-                <div>
-                    <WordSearch setHomeState={setHomeState}></WordSearch>
-                </div>
+                <SelectionContext.Provider value={value}>
+                    <div>
+                        <WordSearch setHomeState={changeHomeState}></WordSearch>
+                    </div>
+                </SelectionContext.Provider>
             );
         case "Home":
             return (
-                <div>
-                    <Home setHomeState={setHomeState}></Home>
-                </div>
+                <SelectionContext.Provider value={value}>
+                    <div>
+                        <Home setHomeState={changeHomeState}></Home>
+                    </div>
+                </SelectionContext.Provider>
             );
         case "NewStorage":
             return (
                 <>
-                    <NewStorage setHomeState={setHomeState}></NewStorage>
+                    <NewStorage setHomeState={changeHomeState}></NewStorage>
                 </>
             )
         case "NewDictionary":
             return (
                 <>
-                    <NewDictionary setHomeState={setHomeState}></NewDictionary>
+                    <NewDictionary setHomeState={changeHomeState}></NewDictionary>
                 </>
             )
         default:

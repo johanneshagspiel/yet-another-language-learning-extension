@@ -1,5 +1,5 @@
 import React from 'react';
-import {addNote} from "../../../../../utils/Helper/AnkiHelper";
+import {addNote} from "../../../../../../utils/Helper/AnkiHelper";
 
 export default function CreateFlashcardButton({ front, back }) {
 

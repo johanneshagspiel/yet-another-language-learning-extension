@@ -1,6 +1,6 @@
 import {connectedToAnki, getDeckname} from "../../../../utils/Helper/AnkiHelper";
 import DeckOptions from "./DeckOptions/DeckOptions";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 function StorageSelection() {
     const [showError, setShowError] = useState(false);
