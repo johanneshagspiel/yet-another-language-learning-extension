@@ -63,7 +63,6 @@ async function getDeckname() {
 }
 
 function connectedToAnki() {
-
     let connectedToAnkiRequest = new XMLHttpRequest();
 
     try {

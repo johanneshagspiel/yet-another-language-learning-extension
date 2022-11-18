@@ -1,154 +1,87 @@
-<img src="src/assets/img/icon-128.png" width="64"/>
+<img src="src/assets/img/github_logo.png" width="180" height="180"/>
 
-# Chrome Extension Boilerplate with React 17 and Webpack 5
+--------------------------------------------------------------------------------
+[![MIT-License](https://img.shields.io/github/license/johanneshagspiel/yet-another-language-learning-extension)](LICENSE)
+[![Top Language](https://img.shields.io/github/languages/top/johanneshagspiel/yet-another-language-learning-extension)](https://github.com/johanneshagspiel/yet-another-language-learning-extension)
+[![Latest Release](https://img.shields.io/github/v/release/johanneshagspiel/yet-another-language-learning-extension)](https://github.com/johanneshagspiel/yet-another-language-learning-extension/releases/)
 
-[![npm](https://img.shields.io/npm/v/chrome-extension-boilerplate-react)](https://www.npmjs.com/package/chrome-extension-boilerplate-react)
-[![npm-download](https://img.shields.io/npm/dw/chrome-extension-boilerplate-react)](https://www.npmjs.com/package/chrome-extension-boilerplate-react)
-[![npm](https://img.shields.io/npm/dm/chrome-extension-boilerplate-react)](https://www.npmjs.com/package/chrome-extension-boilerplate-react)
+# Yet Another Language Learning Extension
 
-[![dependencies Status](https://david-dm.org/lxieyang/chrome-extension-boilerplate-react/status.svg)](https://david-dm.org/lxieyang/chrome-extension-boilerplate-react)
-[![devDependencies Status](https://david-dm.org/lxieyang/chrome-extension-boilerplate-react/dev-status.svg)](https://david-dm.org/lxieyang/chrome-extension-boilerplate-react?type=dev)
+This repository contains the Google Chrome extension "Yet Another Language Learning Extension" (YALLE) which enables the user to translate words and create flashcards in the browser. 
 
-## Announcements
+The purpose of this application is to help save time with the time-consuming and boring parts of learning a new language such as looking up a word in a dictionary, checking whether it already is in ones vocabulary list and then creating a flash card for it. "Yet Another Language Learning Extension" combines all these activities in one simple Google Chrome extension that automates parts of it like checking for duplicates.
 
-- **_This boilerplate adopts [Manifest V3](https://developer.chrome.com/docs/extensions/mv3/intro/mv3-overview/)!_** For V2 users, please check out the [manifest-v2](https://github.com/lxieyang/chrome-extension-boilerplate-react/tree/manifest-v2) branch, or use version [3.x](https://www.npmjs.com/package/chrome-extension-boilerplate-react/v/3.3.0).
-  - Check out the [Manifest V3 Migration Guide](https://developer.chrome.com/docs/extensions/mv3/intro/mv3-migration/).
-- Recently added [devtools](https://developer.chrome.com/docs/extensions/mv3/devtools/) Support! Thanks [GeekaholicLin](https://github.com/lxieyang/chrome-extension-boilerplate-react/issues/17)!
-- Recently updated from **[React](https://reactjs.org)** ~~16~~ to **17**!
-- Recently updated from **[Webpack Dev Server](https://webpack.js.org/configuration/dev-server/)** ~~3.x~~ to **4.x** and **[Webpack](https://webpack.js.org/)** ~~4~~ to **5**!
-- Recently added [TypeScript](https://www.typescriptlang.org/) Support!
+The ultimate goal is to extend YALLE's functionality further to the actual learning process by implementing features such as:
+- replacing the new tab page with a screen where the user can review flash cards 
+- help user learn by motivating them through activity trackers and progress bars 
 
-## Features
+## Features  
 
-This is a basic Chrome Extensions boilerplate to help you write modular and modern Javascript code, load CSS easily and [automatic reload the browser on code changes](https://webpack.github.io/docs/webpack-dev-server.html#automatic-refresh).
+"Yet Another Language Learning Extension" currently:
+- supports the [PONS](https://en.pons.com/) dictionary
+  - the user can look up words in all supported languages
+  - the results are visually represented similarly to the original website
+- is integrated with the [Anki](https://apps.ankiweb.net/) flashcard program
+  - the user can select which deck and model to store a flashcard in
+  - YALLE automatically checks whether a note for a word already exists
+- uses a [Tiptap](https://tiptap.dev/) based text editor
+  - the user can format the content on the flash card in common ways such as i.e. bold text or create a list
 
-This boilerplate is updated with:
+## To-Do
 
-- [Chrome Extension Manifest V3](https://developer.chrome.com/docs/extensions/mv3/intro/mv3-overview/)
-- [React 17](https://reactjs.org)
-- [Webpack 5](https://webpack.js.org/)
-- [Webpack Dev Server 4](https://webpack.js.org/configuration/dev-server/)
-- [React Hot Loader](https://github.com/gaearon/react-hot-loader)
-- [eslint-config-react-app](https://www.npmjs.com/package/eslint-config-react-app)
-- [Prettier](https://prettier.io/)
-- [TypeScript](https://www.typescriptlang.org/)
+YALLE is very much still under development and not bug-free and without any styling. However, its baseline functionality as outlined above already works. The main points of future improvement are: 
 
-This boilerplate is heavily inspired by and adapted from [https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate), with additional support for React 17 features, Webpack 5, and Webpack Dev Server 4.
+- [ ] Optimize the React components to minimize re-renders
+- [ ] Sanity check user input
+- [ ] Style the entire application with CSS 
+- [ ] Support more storage options such as Google docs
+- [ ] Support more dictionaries with an API such as the one provided by the Oxford Dictionary
+- [ ] Comment the code base
+- [ ] Add more formatting options to the editor such as justifying text
 
-Please open up an issue to nudge me to keep the npm packages up-to-date. FYI, it takes time to make different packages with different versions work together nicely.
+After that, additional functionality like the improved new tab pag will be worked on.
 
-## Installing and Running
+## Tools
 
-### Procedures:
+| Purpose                               | Name                                                                            |
+|---------------------------------------|---------------------------------------------------------------------------------|
+| Programming language                  | [Javascript](https://nodejs.org/en/)                                            |
+| Package manager                       | [npm](https://www.npmjs.com/)                                                   |
+| Version control system                | [Git](https://git-scm.com/)                                                     |  
+| UI Framework                          | [React 17](https://reactjs.org)                                                 | 
+| JavaScript bundler                    | [Webpack 5](https://webpack.js.org/)                                            |
+| Development server for live reloading | [Webpack Dev Server 4](https://webpack.js.org/configuration/dev-server/)        | 
+| Hot loader for React components       | [React Hot Loader](https://github.com/gaearon/react-hot-loader)                 |
+| ESLint configuration for react app    | [eslint-config-react-app](https://www.npmjs.com/package/eslint-config-react-app) |
+ | Code formatter                        | [Prettier](https://prettier.io/)                                                |
+| WYSIWYG Text Editor |[Tiptap](https://tiptap.dev/)                                                    |
 
-1. Check if your [Node.js](https://nodejs.org/) version is >= **14**.
-2. Clone this repository.
-3. Change the package's `name`, `description`, and `repository` fields in `package.json`.
-4. Change the name of your extension on `src/manifest.json`.
-5. Run `npm install` to install the dependencies.
-6. Run `npm start`
-7. Load your extension on Chrome following:
-   1. Access `chrome://extensions/`
-   2. Check `Developer mode`
-   3. Click on `Load unpacked extension`
-   4. Select the `build` folder.
-8. Happy hacking.
+## Installation
 
-## Structure
+To simply install the extension, you can find the most recent compiled build with the [latest release](https://github.com/johanneshagspiel/yet-another-language-learning-extension/releases/). Then, you should load the extension in Google Chrome by:
+1. Going to `chrome://extensions/`
+2. Checking the option `Developer mode`
+3. Clicking on `Load unpacked extension`
+4. Selecting the unzipped `yet-another-language-learning-extension` folder from the release
 
-All your extension's code must be placed in the `src` folder.
+To build the application yourself, you have to:
 
-The boilerplate is already prepared to have a popup, an options page, a background page, and a new tab page (which replaces the new tab page of your browser). But feel free to customize these.
+1. Check if your Node.js version is >= 14 with `node -v`
+2. Clone this repository with `git clone https://github.com/johanneshagspiel/yet-another-language-learning-extension.git`
+3. Run `npm install` to install all the dependencies
+4. Run `npm start` to launch the webpack server
+5. Load the extension in Google Chrome by:
+   1. Going to `chrome://extensions/`
+   2. Checking the option `Developer mode`
+   3. Clicking on `Load unpacked extension`
+   4. Selecting the generated `build` folder
 
-## TypeScript
+## Licence
 
-This boilerplate now supports TypeScript! The `Options` Page is implemented using TypeScript. Please refer to `src/pages/Options/` for example usages.
+The "Yet Another Language Learning Extension" is published under the MIT licence, which can be found in the [LICENSE](LICENSE) file. 
 
-## Webpack auto-reload and HRM
+## References
 
-To make your workflow much more efficient this boilerplate uses the [webpack server](https://webpack.github.io/docs/webpack-dev-server.html) to development (started with `npm start`) with auto reload feature that reloads the browser automatically every time that you save some file in your editor.
-
-You can run the dev mode on other port if you want. Just specify the env var `port` like this:
-
-```
-$ PORT=6002 npm run start
-```
-
-## Content Scripts
-
-Although this boilerplate uses the webpack dev server, it's also prepared to write all your bundles files on the disk at every code change, so you can point, on your extension manifest, to your bundles that you want to use as [content scripts](https://developer.chrome.com/extensions/content_scripts), but you need to exclude these entry points from hot reloading [(why?)](https://github.com/samuelsimoes/chrome-extension-webpack-boilerplate/issues/4#issuecomment-261788690). To do so you need to expose which entry points are content scripts on the `webpack.config.js` using the `chromeExtensionBoilerplate -> notHotReload` config. Look the example below.
-
-Let's say that you want use the `myContentScript` entry point as content script, so on your `webpack.config.js` you will configure the entry point and exclude it from hot reloading, like this:
-
-```js
-{
-  …
-  entry: {
-    myContentScript: "./src/js/myContentScript.js"
-  },
-  chromeExtensionBoilerplate: {
-    notHotReload: ["myContentScript"]
-  }
-  …
-}
-```
-
-and on your `src/manifest.json`:
-
-```json
-{
-  "content_scripts": [
-    {
-      "matches": ["https://www.google.com/*"],
-      "js": ["myContentScript.bundle.js"]
-    }
-  ]
-}
-```
-
-## Intelligent Code Completion
-
-Thanks to [@hudidit](https://github.com/lxieyang/chrome-extension-boilerplate-react/issues/4)'s kind suggestions, this boilerplate supports chrome-specific intelligent code completion using [@types/chrome](https://www.npmjs.com/package/@types/chrome).
-
-## Packing
-
-After the development of your extension run the command
-
-```
-$ NODE_ENV=production npm run build
-```
-
-Now, the content of `build` folder will be the extension ready to be submitted to the Chrome Web Store. Just take a look at the [official guide](https://developer.chrome.com/webstore/publish) to more infos about publishing.
-
-## Secrets
-
-If you are developing an extension that talks with some API you probably are using different keys for testing and production. Is a good practice you not commit your secret keys and expose to anyone that have access to the repository.
-
-To this task this boilerplate import the file `./secrets.<THE-NODE_ENV>.js` on your modules through the module named as `secrets`, so you can do things like this:
-
-_./secrets.development.js_
-
-```js
-export default { key: '123' };
-```
-
-_./src/popup.js_
-
-```js
-import secrets from 'secrets';
-ApiCall({ key: secrets.key });
-```
-
-:point_right: The files with name `secrets.*.js` already are ignored on the repository.
-
-## Resources:
-
-- [Webpack documentation](https://webpack.js.org/concepts/)
-- [Chrome Extension documentation](https://developer.chrome.com/extensions/getstarted)
-
----
-
-Michael Xieyang Liu | [Website](https://lxieyang.github.io)
-
-
-Font taken from: [Remix Icon](https://remixicon.com/)
+- This program is based on a boilerplate template created by [Michael Xieyang Liu](https://github.com/lxieyang/chrome-extension-boilerplate-react).
+- The flashcard symbol used in the logo was created by [iconixar](https://www.flaticon.com/de/autoren/iconixar) on [flaticon](https://www.flaticon.com/free-icons/flashcard).
+- The editor symbols were taken from [Remix Icon](https://remixicon.com/).

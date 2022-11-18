@@ -1,62 +1,47 @@
-import React, {useEffect, useState} from 'react';
-import {connectedToAnki, getDeckname} from "../../../../utils/Helper/AnkiHelper";
-import DeckOptions from "./DeckOptions/DeckOptions";
+import React, {useContext, useEffect, useState} from 'react';
 import {StorageSelection} from "./StorageSelection";
+import {SelectionContext} from "../../SelectionContext/SelectionContext";
 
 export default function StorageOverview({setState}) {
     const [storageList, setStorageList] = useState(null);
-    const [selectedStorage, setSelectedStorage] = useState(-1);
-    // const [showError, setShowError] = useState(false);
-    // const [deckNames, setDeckNames] = useState(null);
-    // const [selectedDeck, setSelectedDeck] = useState(-1);
+    const {storage, saveStorage} = useContext(SelectionContext);
 
     useEffect(async () => {
-        const storageOptionsObject = await chrome.storage.sync.get("storage");
-        const storageList = storageOptionsObject["storage"];
+        const storageOptionsObject = await chrome.storage.sync.get("storageList");
+        const storageList = storageOptionsObject["storageList"];
         const storageListType = typeof storageList;
 
-        if (storageListType != "undefined") {
+        if (storageListType !== "undefined") {
             setStorageList(storageList);
         }
         //this is the cleanup function called when we move back to the home screen - currently does nothing
         return () => {}
     },[]);
 
-    function onStorageSelection(index) {
-        setSelectedStorage(index);
+    function onStorageSelection(storageObj) {
+        saveStorage(storageObj);
     }
 
     let storageElementList = null;
     if (storageList) {
         storageElementList = storageList.map((storageObj, i) => {
-            if (i === 0) {
-                return (
-                    <div key={"div" + i}>
-                        <input type="radio" key={'storage' + i} onChange={() => onStorageSelection(i)}
-                               id={storageObj["type"]} checked={true}></input>
-                        <label htmlFor={storageObj["type"]} key={'label' + i}>{storageObj["type"]}</label>
-                    </div>
-                )
-            } else {
-                return (
-                    <div key={"div" + i}>
-                        <input type="radio" key={'storage' + i} onChange={() => onStorageSelection(i)}
-                               id={storageObj["type"]}></input>
-                        <label htmlFor={storageObj["type"]} key={'label' + i}>{storageObj["type"]}</label>
-                    </div>
-                )
-            }
+            return (
+                <div key={"div" + i}>
+                    <input type="radio" key={'storage' + i}
+                           onChange={() => onStorageSelection(storageObj)}
+                           id={storageObj["type"]}
+                           checked={storageObj["name"] === storage["name"]}></input>
+                    <label htmlFor={storageObj["type"]} key={'label' + i}>{storageObj["type"]}</label>
+                </div>
+            )
         })
-        if (selectedStorage !== 0) {
-            setSelectedStorage(0);
-        }
     }
 
     function addNewStorage() {
         setState("NewStorage");
     }
 
-    const notShowNewStorageButton = storageList;
+    const notShowNewStorageButton = storageList?.length >= 2;
     const addNewStorageButton = <button type="button" onClick={addNewStorage}>Add new storage option</button>
 
     if (!storageList) {

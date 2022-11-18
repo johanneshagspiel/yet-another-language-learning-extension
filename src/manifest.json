@@ -6,27 +6,19 @@
   "background": { "service_worker": "background.bundle.js" },
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "icon-34.png"
-  },
-  "chrome_url_overrides": {
-    "newtab": "newtab.html"
+    "default_icon": "icon_32.png"
   },
   "icons": {
-    "128": "icon-128.png"
+    "128": "icon_128.png"
   },
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*", "<all_urls>"],
-      "js": ["contentScript.bundle.js"],
-      "css": ["content.styles.css"]
-    }
-  ],
-  "devtools_page": "devtools.html",
   "web_accessible_resources": [
     {
-      "resources": ["content.styles.css", "icon-128.png", "icon-34.png", "styling/*", "bold.svg"],
+      "resources": ["content.styles.css", "icon_128.png", "icon_32.png", "styling/*", "bold.svg"],
       "matches": []
     }
   ],
-  "permissions": ["storage", "scripting", "contextMenus"]
+  "permissions": ["storage", "scripting", "contextMenus"],
+  "host_permissions": [
+    "https://api.pons.com/v1/"
+  ]
 }

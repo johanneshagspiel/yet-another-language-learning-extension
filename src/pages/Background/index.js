@@ -18,6 +18,10 @@ chrome.contextMenus.onClicked.addListener(async function (info, tab) {
         "wordExists": true,
     };
 
+    console.log("context")
+    console.log(info.selectionText)
+    console.log("context")
+
     const result = {
         "lastSearchText": obj
     };

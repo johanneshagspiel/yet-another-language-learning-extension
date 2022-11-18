@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {getModels} from "../../../../../utils/Helper/AnkiHelper";
 import {ModelOptions} from "./ModelOptions";
 
@@ -7,13 +7,16 @@ function ModelSelection() {
 
     async function asyncGetModels() {
         const promiseModelList = await getModels();
-
         if (JSON.stringify(promiseModelList) !== JSON.stringify(models)) {
             setModels(promiseModelList);
         }
 
     }
-    asyncGetModels();
+
+    useEffect(() => {
+            asyncGetModels();
+            return () => {}
+        }, [])
 
     let modelOptionList = null;
     if(models) {

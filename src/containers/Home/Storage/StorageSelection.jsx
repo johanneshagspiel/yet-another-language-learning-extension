@@ -5,7 +5,6 @@ import React, {useEffect, useState} from "react";
 function StorageSelection() {
     const [showError, setShowError] = useState(false);
     const [deckNames, setDeckNames] = useState(null);
-    const [selectedDeck, setSelectedDeck] = useState(-1);
 
     let errorMessage = <p></p>
     let deckOptions = null;

@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {DictionaryLanguageSelection} from "./DictionaryLanguageSelection";
+import {SelectionContext} from "../../SelectionContext/SelectionContext";
 
 export default function DictionaryOverview({ setState }) {
     const [dictionaryList, setDictionaryList] = useState(null);
-    const [selectedDictionary, setSelectedDictionary] = useState("");
+    const {dictionary, saveDictionary} = useContext(SelectionContext);
 
     useEffect(async () => {
-        const dictionaryOptionsObject = await chrome.storage.sync.get("dictionary");
-        const dictionaryList = dictionaryOptionsObject["dictionary"];
+        const dictionaryOptionsListObject = await chrome.storage.sync.get("dictionaryList");
+        const dictionaryList = dictionaryOptionsListObject["dictionaryList"];
         const dictionaryListType = typeof dictionaryList;
 
         if (dictionaryListType !== "undefined") {
@@ -15,44 +16,37 @@ export default function DictionaryOverview({ setState }) {
         }
     }, []);
 
-    async function saveDictionaryName(dictionaryName) {
-        const storeObj = {
-            "dictionaryName": dictionaryName
-        };
-        await chrome.storage.local.set(storeObj);
-    }
 
-    function onSelectDictionary(dictionaryName) {
-        saveDictionaryName(dictionaryName);
-        setSelectedDictionary(dictionaryName);
+    function onSelectDictionary(dictionaryObj) {
+        saveDictionary(dictionaryObj);
     }
 
     let dictionaryElementList = null;
     if (dictionaryList) {
         dictionaryElementList = dictionaryList.map((dictionaryObj, i) => {
-            if (i === 0) {
-                return (
-                    <div key={"dic" + i}>
-                        <input type="radio" key={"dic" + i} onChange={() => onSelectDictionary(dictionaryObj["type"])} id={dictionaryObj["type"]} checked={true}></input>
-                        <label htmlFor={dictionaryObj["type"]}>{dictionaryObj["type"]}</label>
-                    </div>)
-            } else {
-                return (
+            return (
                 <div key={"dic" + i}>
-                    <input type="radio" key={"dic" + i} onChange={() => onSelectDictionary(dictionaryObj["type"])} id={dictionaryObj["type"]}></input>
+                    <input type="radio"
+                           key={"dic" + i}
+                           onChange={() => onSelectDictionary(dictionaryObj)}
+                           id={dictionaryObj["type"]}
+                           checked={dictionaryObj["name"] == dictionary["name"]}>
+
+                    </input>
                     <label htmlFor={dictionaryObj["type"]}>{dictionaryObj["type"]}</label>
                 </div>)
-            }
         })
     }
 
-    const notShowAddDictionaryButton = dictionaryList
+    const notShowAddDictionaryButton = dictionaryList?.length >= 2
     function addNewDictionary() {
         setState("NewDictionary");
     }
     const addNewDictionaryButton = <button type="button" onClick={addNewDictionary}>Add new dictionary</button>
 
-    const languageSelectionDic = <DictionaryLanguageSelection dictionaryName={"PONS"}></DictionaryLanguageSelection>
+    function emptyFunction() {}
+
+    const languageSelectionDic = <DictionaryLanguageSelection onChangeParentFunction={emptyFunction}></DictionaryLanguageSelection>
 
     if (!dictionaryList) {
         return (

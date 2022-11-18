@@ -34,7 +34,125 @@ function getSupportedLanguageDic() {
     return translations;
 }
 
+function getCorrectLanguageConnection(inputMapping) {
+
+    const languageMapping = {
+        "elde": "deel",
+        "deel": "deel",
+        "ende": "deen",
+        "deen": "deen",
+        "frde": "defr",
+        "defr": "defr",
+        "esde": "dees",
+        "dees": "dees",
+        "rude": "deru",
+        "deru": "deru",
+        "plde": "depl",
+        "depl": "depl",
+        "itde": "deit",
+        "deit": "deit",
+        "ptde": "dept",
+        "dept": "dept",
+        "trde": "detr",
+        "detr": "detr",
+        "dela": "dela",
+        "lade": "dela",
+        "desl": "desl",
+        "slde": "desl",
+        "esen": "enes",
+        "enes": "enes",
+        "fren": "enfr",
+        "enfr": "enfr",
+        "plen": "enpl",
+        "enpl": "enpl",
+        "slen": "ensl",
+        "ensl": "ensl",
+        "espl": "espl",
+        "ples": "espl",
+        "frpl": "frpl",
+        "plfr": "frpl",
+        "itpl": "itpl",
+        "plit": "itpl",
+        "rupl": "plru",
+        "plru": "plru",
+        "essl": "essl",
+        "sles": "essl",
+        "frsl": "frsl",
+        "slfr": "frsl",
+        "itsl": "itsl",
+        "slit": "itsl",
+        "enit": "enit",
+        "iten": "enit",
+        "enpt": "enpt",
+        "pten": "enpt",
+        "enru": "enru",
+        "ruen": "enru",
+        "espt": "espt",
+        "ptes": "espt",
+        "esfr": "esfr",
+        "fres": "esfr",
+        "delb": "delb",
+        "lbde": "delb",
+        "dezh": "dezh",
+        "zhde": "dezh",
+        "enzh": "enzh",
+        "zhen": "enzh",
+        "eszh": "eszh",
+        "zhes": "eszh",
+        "frzh": "frzh",
+        "zhfr": "frzh",
+        "denl": "denl",
+        "nlde": "denl",
+        "arde": "arde",
+        "dear": "arde",
+        "defa": "defa",
+        "fade": "defa",
+        "defi": "defi",
+        "fide": "defi",
+        "dehr": "dehr",
+        "hrde": "dehr",
+        "deja": "deja",
+        "jade": "deja",
+        "dero": "dero",
+        "rode": "dero",
+        "desk": "desk",
+        "skde": "desk",
+        "esit": "esit",
+        "ites": "esit",
+        "frit": "frit",
+        "itfr": "frit",
+        "bgde": "bgde",
+        "debg": "bgde",
+        "bgen": "bgen",
+        "enbg": "bgen",
+        "dade": "dade",
+        "deda": "dade",
+        "csde": "csde",
+        "decs": "csde",
+        "dehu": "dehu",
+        "hude": "dehu",
+        "deno": "deno",
+        "node": "deno",
+        "desv": "desv",
+        "svde": "desv",
+        "deis": "deis",
+        "isde": "deis",
+        "desr": "desr",
+        "srde": "desr",
+        "ensr": "ensr",
+        "sren": "ensr",
+        "dede": "dede",
+        "dedx": "dedx"
+    }
+    if (inputMapping in languageMapping) {
+        return languageMapping[inputMapping]
+    } else {
+        return "dictionary_not_found"
+    }
+}
+
 function getLanguageFromCode(countryCode) {
+
     const countryCodeType = typeof countryCode
     if (countryCodeType === "string") {
 
@@ -794,5 +912,6 @@ function getLanguageCodeDic() {
 export {
     getSupportedLanguageDic,
     getLanguageFromCode,
-    getCountryCodeFromLanguage
+    getCountryCodeFromLanguage,
+    getCorrectLanguageConnection
 }

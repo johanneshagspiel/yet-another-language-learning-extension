@@ -1,63 +1,68 @@
 import {DictionaryLanguageSelection} from "../../Home/Dictionary/DictionaryLanguageSelection";
 import {getLanguageFromCode} from "../../../../utils/Helper/LanguageHelper";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {lookUpWordPons} from "../../../../utils/Helper/PonsHelper";
 import Rom from "./Rom/Rom";
+import {SelectionContext} from "../../SelectionContext/SelectionContext";
+import {ResponseErrorMessage} from "./ResponseErrorMessage";
 
-function DictionarySection({ selectedDeck, selectedDictionary, targetLanguage, sourceLanguage }) {
+function DictionarySection() {
+    const {dictionary, targetLanguageCode, sourceLanguageCode} = useContext(SelectionContext);
+
     const [searchStorageObj, setSearchStorageObj] = useState(null);
-    const [wordExists, setWordExists] = useState(false);
-    const [searchConducted, setSearchConducted] = useState(false);
+    const [conductSearch, setConductSearch] = useState(false);
+    const [statusCode, setStatusCode] = useState(204)
 
     useEffect(async () => {
         const searchStorageObjFound = await chrome.storage.local.get("lastSearchText");
-        const searchStorageObj = searchStorageObjFound["lastSearchText"]
+        setSearchStorageObj(searchStorageObjFound["lastSearchText"])
+        return () => {}
+    }, [])
 
-        const selectionText = searchStorageObj["selectionText"]
+    function newLanguageSelection() {
+        searchStorageObj.checkTranslation = true
+        setSearchStorageObj(searchStorageObj)
+    }
+
+    async function checkTranslation() {
+        const selectionText = searchStorageObj?.selectionText
         const selectionTextType = typeof selectionText;
 
-        if (selectionTextType === "undefined") {
-            if (searchConducted) {
-                setSearchConducted(false);
-            }
-        } else {
+        if (selectionTextType !== "undefined") {
+
             const checkTranslation = searchStorageObj?.checkTranslation
 
-            if (checkTranslation) {
+            if (conductSearch || checkTranslation) {
 
                 const lastSearchText = searchStorageObj["selectionText"];
 
-                let searchParam = {}
-                searchParam["query"] = "deck:" + selectedDeck + " back:*" + lastSearchText + "*";
+                const [statusCode, translation] = lookUpWordPons(lastSearchText, targetLanguageCode, sourceLanguageCode);
+                searchStorageObj["translation"] = translation
 
-                const translation = lookUpWordPons(lastSearchText, targetLanguage, sourceLanguage);
-                searchStorageObj["translation"]= translation
-
-                if (translation.length === 0) {
-                    searchStorageObj["wordExists"] = false;
-                    if (wordExists) {
-                        setWordExists(false)
-                    }
+                if (statusCode === 200) {
+                    searchStorageObj["wordExists"] = true
                 } else {
-                    if (!wordExists) {
-                        setWordExists(true)
-                    }
+                    searchStorageObj["wordExists"] = false;
+                    setStatusCode(statusCode)
                 }
+
+                searchStorageObj["checkTranslation"] = false;
 
                 let result = {}
                 result["lastSearchText"] = searchStorageObj
                 await chrome.storage.local.set(result)
 
                 setSearchStorageObj(searchStorageObj)
+                setConductSearch(false)
             }
         }
-        //this is the cleanup function called when we move back to the home screen - currently does nothing
-        return () => {}
-    }, [])
+    }
+
+    checkTranslation()
 
     if (searchStorageObj) {
         let romElementList = null;
-        if (wordExists) {
+        if (searchStorageObj["wordExists"]) {
             const translationJson = JSON.parse(searchStorageObj["translation"]);
             const listRomsStrings = translationJson[0]["hits"].map(x =>x["roms"]);
 
@@ -71,15 +76,18 @@ function DictionarySection({ selectedDeck, selectedDictionary, targetLanguage, s
 
         return (
             <>
-                <DictionaryLanguageSelection dictionaryName={selectedDictionary}></DictionaryLanguageSelection>
-                {!wordExists && <p>No translation was found for "{searchStorageObj["selectionText"]}" in {getLanguageFromCode(sourceLanguage)}.</p>}
-                {wordExists && romElementList}
+                <DictionaryLanguageSelection onChangeParentFunction={newLanguageSelection}></DictionaryLanguageSelection>
+                {!searchStorageObj["wordExists"] && <ResponseErrorMessage statusCode={statusCode}
+                                                                          selectionText={searchStorageObj["selectionText"]}
+                                                                          sourceLanguageCode={getLanguageFromCode(sourceLanguageCode)}
+                                                                          targetLanguageCode={targetLanguageCode}></ResponseErrorMessage>}
+                {searchStorageObj["wordExists"] && romElementList}
             </>
         )
     } else {
         return (
             <>
-                <DictionaryLanguageSelection dictionaryName={selectedDictionary}></DictionaryLanguageSelection>
+                <DictionaryLanguageSelection onChangeParentFunction={newLanguageSelection}></DictionaryLanguageSelection>
                 {<p>No word has been searched.</p>}
             </>
         )

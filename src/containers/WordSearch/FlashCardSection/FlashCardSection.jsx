@@ -1,10 +1,12 @@
 import {Tiptap} from "./Tiptap/Tiptap";
 import {StorageSelection} from "../../Home/Storage/StorageSelection";
 import {ModelSelection} from "../../Home/Storage/ModelSelection/ModelSelection";
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import {checkWordExists} from "../../../../utils/Helper/AnkiHelper";
+import {SelectionContext} from "../../SelectionContext/SelectionContext";
 
-function FlashCardSection({ selectedDeck }) {
+function FlashCardSection() {
+    const {deck} = useContext(SelectionContext);
 
     let cardExists = false;
     let lastSearchText = "";
@@ -22,7 +24,7 @@ function FlashCardSection({ selectedDeck }) {
             lastSearchText = searchStorageObj["selectionText"];
 
             let searchParam = {}
-            searchParam["query"] = "deck:" + selectedDeck + " back:*" + lastSearchText + "*";
+            searchParam["query"] = "deck:" + deck + " back:*" + lastSearchText + "*";
 
             const resultCardExists = await checkWordExists(searchParam);
             if (resultCardExists) {
